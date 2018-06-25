@@ -58,6 +58,7 @@ class TestCharge {
 			try {
 		
 				machine.charge(new Credit(CreditValue.FIFTY_COIN));
+				assertEquals(false,true);
 			
 			}catch (KeyNotPresent e) {
 				
@@ -82,6 +83,7 @@ class TestCharge {
 			try {
 		
 				machine.charge(new Credit(2));
+				assertEquals(false,true);
 			
 			}catch (CreditExceedsBound e) {
 				
@@ -105,6 +107,7 @@ class TestCharge {
 			try {
 		
 				machine.charge(new Credit(2));
+				assertEquals(false,true);
 			
 			}catch (FullCredit e) {
 				
