@@ -3,7 +3,7 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.intecs.beverage.Beverage;
@@ -20,16 +20,19 @@ import com.intecs.machine.exception.OutOfAvailableCredit;
 
 class TestBuy {
 
-	@Before
-	void setup() {
-		System.out.println("before");
+	private Machine machine;
+	private BeverageType type;
+	
+	@BeforeEach
+	void initialize() {
+		
+		machine = new Machine();
+		type= new BeverageType("Caffe");
+		
 	}
 		
 	@Test
 	void testBuyWithOutKey() {
-		
-		Machine machine = new Machine();
-		BeverageType type= new BeverageType("Caffe", (float) 0.40);
 		
 		try {
 			
@@ -40,22 +43,24 @@ class TestBuy {
 			//Do nothing
 			
 		} catch (Exception e) {			
+		
 			fail(e);
-		} 	
+		
+		}
+		
 	}
 	
 	@Test
 	void testInvalidBeverageSelection() {
 	
-		BeverageType type = new BeverageType("Mocha", (float) 0.40);
+		BeverageType type_1 = new BeverageType("Mocha");
 		Key key= Key.empty();
-		Machine machine = new Machine();
 		
 		machine.insertKey(key);
 		
 		try {
 			
-			machine.buy(type);
+			machine.buy(type_1);
 		
 		} catch (MachineException e) {
 			
@@ -70,10 +75,7 @@ class TestBuy {
 	@Test
 	void testOutOfCredit() {
 	
-		BeverageType type = new BeverageType("Caffe", (float) 0.40);
-		Credit credit = Credit.zero();
-		Key key = new Key(credit, "AndreaLuca");
-		Machine machine = new Machine();
+		Key key = Key.empty();
 		
 		machine.insertKey(key);
 		
@@ -90,21 +92,46 @@ class TestBuy {
 		} 
 	   
 	}   
+	
+	
+	
+		@Test
+		void testBuySelectingSugarLevel() {
+			  
+			Key key = new Key(new Credit(5f), "");
+			
+			machine.insertKey(key);
+			
+			
+			try {
+				
+				machine.setSugarLevel(4);
+				
+				Beverage beverage = machine.buy(type);
+				Beverage beverage2=new Beverage(type, new Sugar(4));
+				assertEquals(beverage,beverage2);
+
+				
+			} catch (MachineException e) {
+			   e.printStackTrace();
+				assertEquals(true, false);
+			
+			} 
+		
+		
+		  }
 
 	@Test
 	void testBuyOK() {
 	
-		BeverageType type = new BeverageType("Caffe", (float) 0.40);
-		Credit credit = new Credit((float) 5);
-		Key key = new Key(credit, "AndreaLuca");
-		Machine machine = new Machine();
+		Key key = new Key(new Credit(5f), "");
 		
 		machine.insertKey(key);
 		
 		try {
 			
 			Beverage beverage = machine.buy(type);
-			Beverage beverage2=new Beverage(type, new Sugar(3));
+			Beverage beverage2 = new Beverage(type, new Sugar(3));
 			assertEquals(beverage,beverage2);
 
 			
@@ -114,40 +141,7 @@ class TestBuy {
 		
 		} 
 	
-	  }
-	  
-	@Test
-	void testBuySelectingSugarLevel() {
-		  
-		BeverageType type = new BeverageType("Caffe", (float) 0.40);
-		Credit credit = new Credit((float) 5);
-		Key key = new Key(credit, "AndreaLuca");
-		
-		Machine machine = new Machine();
-		
-		machine.insertKey(key);
-		
-		
-		try {
-			
-			machine.setSugarLevel(4);
-			
-			Beverage beverage = machine.buy(type);
-			Beverage beverage2=new Beverage(type, new Sugar(4));
-			assertEquals(beverage,beverage2);
-
-			
-		} catch (MachineException e) {
-		
-			assertEquals(true, false);
-		
-		} 
+	}
 	
-	
-	  }
 	  
-	  
-	  
-	
-
 }

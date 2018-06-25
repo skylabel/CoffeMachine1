@@ -1,5 +1,8 @@
 package com.intecs.machine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.intecs.beverage.Beverage;
 import com.intecs.beverage.BeverageType;
 import com.intecs.beverage.Cappuccino;
@@ -14,19 +17,25 @@ public class Machine {
 	
 	private Key key;
 	private SugarLevel sugarLevel;
-	static float keyBound = 10;
+	private static float keyBound = 10;
+	private Map costTable;
 	
 	public Machine() {
 		
 		key = null;
 		sugarLevel = new SugarLevel();
-	
+		costTable = new HashMap<String, Float>();
+		costTable.put("Caffe", 0.4f);
+		costTable.put("Cappucino", 0.5f);
+		costTable.put("Caffelatte", 0.5f);
+		costTable.put("Cioccolata", 0.4f);
+		costTable.put("Te", 0.4f);
+		
 	}
 	
 	public void insertKey(Key _key) {
 	
 		key = _key; 
-		//System.out.println("Chiave inserita. ID: " + key.getId() + " Credito: " + key.getCredit());
 
 	}
 	
@@ -56,31 +65,31 @@ public class Machine {
 				
 				case ("Caffe"): 
 					
-					if (!(checkCredit(_type.getCost()))) throw new OutOfAvailableCredit();
+					if (!(checkCredit((float) costTable.get("Caffe")))) throw new OutOfAvailableCredit();
 					else beverage = new Coffe(_type, new Sugar(this.sugarLevel.getLevel()));
 					break;
 					
 				case ("Cappuccino"): 
 					
-					if (!(checkCredit(_type.getCost()))) throw new OutOfAvailableCredit();
+					if (!(checkCredit((float) costTable.get("Cappucino"))))  throw new OutOfAvailableCredit();
 					else beverage = new Cappuccino(_type, new Sugar(this.sugarLevel.getLevel()));
 					break;
 				
 				case ("Caffelatte"): 
 					
-					if (!(checkCredit(_type.getCost()))) throw new OutOfAvailableCredit();
+					if (!(checkCredit((float) costTable.get("Caffelatte"))))  throw new OutOfAvailableCredit();
 					else beverage = new Latte(_type, new Sugar(this.sugarLevel.getLevel()));
 					break;
 					
 				case ("Cioccolata"): 
 					
-					if (!(checkCredit(_type.getCost()))) throw new OutOfAvailableCredit();
+					if (!(checkCredit((float) costTable.get("Cioccolata")))) throw new OutOfAvailableCredit();
 					else beverage = new Chocolate(_type, new Sugar(this.sugarLevel.getLevel()));
 					break;
 					
 				case ("Tè"): 
 					
-					if (!(checkCredit(_type.getCost()))) throw new OutOfAvailableCredit();
+					if (!(checkCredit((float) costTable.get("Tè")))) throw new OutOfAvailableCredit();
 					else beverage = new Te(_type, new Sugar(this.sugarLevel.getLevel()));
 					break;
 					

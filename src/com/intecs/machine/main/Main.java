@@ -16,7 +16,7 @@ public class Main {
 	private void testCase001() {
 		
 		Machine machine_001 = new Machine();
-		BeverageType type_001 = new BeverageType("Caffe", (float) 0.40);
+		BeverageType type_001 = new BeverageType("Caffe");
 		
 		try {
 		

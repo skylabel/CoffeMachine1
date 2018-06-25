@@ -3,12 +3,10 @@ package com.intecs.beverage;
 public class BeverageType {
 	
 	private String name;
-	private float cost;
 	
-	public BeverageType(String _name, float _cost) {
+	public BeverageType(String _name) {
 		
 		this.name = _name;
-		this.cost = _cost;
 		
 	}
 	
@@ -18,15 +16,9 @@ public class BeverageType {
 		
 	}
 	
-	public float getCost() {
-		
-		return cost;
-		
-	}
-
-	
 	@Override
 	public boolean equals(Object obj) {
+		
 		boolean result=false;
 		if (this == obj) return true;
 		
@@ -34,10 +26,7 @@ public class BeverageType {
 		
 		BeverageType c = (BeverageType) obj;
 	
-	
-		if(name.equals(c.name) && (cost==c.cost)) {
-			result=true;
-		}
+		if(name.equals(c.name)) result = true;
 		
 		return result;
 		
