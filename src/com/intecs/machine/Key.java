@@ -5,10 +5,22 @@ public class Key {
 	private Credit credit;
 	private String id;
 	
+	public Key() {
+		
+		this(Credit.zero(), "");
+		
+	}
+	
 	public Key(Credit credit, String id) {
 		
 		this.credit = credit;
 		this.id = id;
+	
+	}
+	
+	public static Key empty() {
+
+		return new Key();
 	
 	}
 	

@@ -32,10 +32,12 @@ class TestBuy {
 		BeverageType type= new BeverageType("Caffe", (float) 0.40);
 		
 		try {
+			
 			machine.buy(type);
 			
 		} catch (KeyNotPresent e) {
-			//
+			
+			//Do nothing
 			
 		} catch (Exception e) {			
 			fail(e);
@@ -46,8 +48,7 @@ class TestBuy {
 	void testInvalidBeverageSelection() {
 	
 		BeverageType type = new BeverageType("Mocha", (float) 0.40);
-		Credit credit = Credit.zero();
-		Key key= new Key(credit, "AndreaLuca");
+		Key key= Key.empty();
 		Machine machine = new Machine();
 		
 		machine.insertKey(key);
