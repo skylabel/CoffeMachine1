@@ -62,7 +62,7 @@ class TestCharge {
 
 		try {
 
-			machine.chargeKey(new Credit(2));
+			machine.chargeKey(new Credit(2f));
 			assertEquals(false, true);
 
 		} catch (CreditExceedsBound e) {
@@ -86,7 +86,7 @@ class TestCharge {
 
 		try {
 
-			machine.chargeKey(new Credit(2));
+			machine.chargeKey(new Credit(2f));
 			assertEquals(false, true);
 
 		} catch (FullCredit e) {

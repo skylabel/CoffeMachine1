@@ -20,24 +20,19 @@ public class Machine {
 	private static float keyBound = 10;
 	private static Credit keyboundCredit=new Credit(keyBound);
 	private Configurator configurator = Configurator.getInstance();
-	
 	private Map costTable;
 
 	public Machine() {
-
 		key = null;
 		sugarLevel = new SugarLevel();
-		
-		
 //        Map<String, ?> result = configurator.initializeBeverageType();
        
-		costTable = new HashMap<String, Float>();
+		costTable = new HashMap<BeverageType, Float>();
 		costTable.put("Caffe", 0.4f);
 		costTable.put("Cappucino", 0.5f);
 		costTable.put("Caffelatte", 0.5f);
 		costTable.put("Cioccolata", 0.4f);
 		costTable.put("Te", 0.4f);
-
 	}
 
 	public void insertKey(Key _key) {
@@ -55,73 +50,42 @@ public class Machine {
 
 	}
 
-	public void setSugarLevel(int _level) throws InvalidSugarLevel {
-
-		if (!(sugarLevel.setLevel(_level)))
+	public void setSugarLevel(int level) throws InvalidSugarLevel {
+		if (!(sugarLevel.setLevel(level)))
 			throw new InvalidSugarLevel();
-
 	}
 
-	public Beverage buy(BeverageType _type) throws KeyNotPresent, OutOfAvailableCredit, InvalidBeverage {
-
+	public Beverage buy(BeverageType type) throws KeyNotPresent, OutOfAvailableCredit, InvalidBeverage {
 		Beverage beverage = null;
 		Sugar sugar=new Sugar(sugarLevel);
 
 		if (!(checkKey()))
 			throw new KeyNotPresent();
-		else {
-
-			switch (_type.getName()) {
-
-			case ("Caffe"):
-
-				if (!(checkCredit(new Credit((float)costTable.get("Caffe")))))
+		
+		if (type.equals(new BeverageType("Caffe"))) {
+				if (!(checkCredit((Float) costTable.get("Caffe"))))
 					throw new OutOfAvailableCredit();
-				else
-					beverage = new Coffe(_type, sugar);
-				break;
-
-			case ("Cappuccino"):
-
-				if (!(checkCredit(new Credit((float) costTable.get("Cappucino")))))
+				beverage = new Coffe(type, sugar);
+		} else if (type.equals(new BeverageType("Cappuccino"))) {
+				if (!(checkCredit((Float) costTable.get("Cappucino"))))
 					throw new OutOfAvailableCredit();
-				else
-					beverage = new Cappuccino(_type, sugar);
-				break;
-
-			case ("Caffelatte"):
-
-				if (!(checkCredit(new Credit((float) costTable.get("Caffelatte")))))
+				beverage = new Cappuccino(type, sugar);
+		} else if (type.equals(new BeverageType("Caffelatte"))) {
+				if (!(checkCredit((Float) costTable.get("Caffelatte"))))
 					throw new OutOfAvailableCredit();
-				else
-					beverage = new Latte(_type, sugar);
-				break;
-
-			case ("Cioccolata"):
-
-				if (!(checkCredit(new Credit((float) costTable.get("Cioccolata")))))
+				beverage = new Latte(type, sugar);
+		} else if (type.equals(new BeverageType("Cioccolata"))) {
+				if (!(checkCredit((Float) costTable.get("Cioccolata"))))
 					throw new OutOfAvailableCredit();
-				else
-					beverage = new Chocolate(_type, sugar);
-				break;
-
-			case ("Tè"):
-
-				if (!(checkCredit(new Credit((float) costTable.get("Tè")))))
+				beverage = new Chocolate(type, sugar);
+		} else if (type.equals(new BeverageType("Tè"))) {
+				if (!(checkCredit((Float) costTable.get("Tè"))))
 					throw new OutOfAvailableCredit();
-				else
-					beverage = new Te(_type, sugar);
-				break;
-
-			default:
-				throw new InvalidBeverage();
-
-			}
-
-		}
-
+				beverage = new Te(type, sugar);
+		} else
+			throw new InvalidBeverage();
+		
 		return beverage;
-
 	}
 
 	public void chargeKey(Credit credit) throws KeyNotPresent, CreditExceedsBound, FullCredit {
@@ -142,34 +106,35 @@ public class Machine {
 			throw new FullCredit();
 
 	}
-	
-	
-	
-	
 
 	private Boolean checkKey() {
-
 		Boolean result = false;
 
 		if (key != null)
 			result = true;
 
 		return result;
-
 	}
 	
-	
-	private Boolean checkCredit(Credit credit) {
-
+	private Boolean checkCredit(Float cost) {
 		Boolean result = false;
+		Credit c = new Credit(cost);
 
-		if (credit.compareTo(key.getCredit())<=0)
+		if (c.compareTo(key.getCredit())<=0)
 			result = true;
 
 		return result;
-
 	}
-
+//	private Boolean checkCredit(Credit credit) {
+//		
+//		Boolean result = false;
+//		
+//		if (credit.compareTo(key.getCredit())<=0)
+//			result = true;
+//		
+//		return result;
+//		
+//	}
 
 	public SugarLevel getSugarLevel() {
 

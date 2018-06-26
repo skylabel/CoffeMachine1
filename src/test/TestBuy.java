@@ -116,7 +116,6 @@ class TestBuy {
 			Beverage beverage2=new Beverage(type, new Sugar(machine.getSugarLevel()));
 			assertEquals(beverage,beverage2);
 
-				
 		} catch (MachineException e) {
 		
 				assertEquals(true, false);
