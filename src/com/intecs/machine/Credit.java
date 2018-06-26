@@ -1,8 +1,8 @@
 package com.intecs.machine;
 
-public class Credit {
+public class Credit implements Comparable<Credit>{
 	
-	private float value;
+	private final float value;
 	private static final float ZERO_CREDIT = 0f;
 	
 	public Credit() {
@@ -29,11 +29,6 @@ public class Credit {
 	
 	}
 
-	public void setValue(float value) {
-	
-		this.value = value;
-	
-	}
 
 	@Override
 	public String toString() {
@@ -54,6 +49,20 @@ public class Credit {
 		
 		return result;
 		
+	}
+	
+	
+	
+	public Credit sum(Credit c1) {
+		Float result=c1.getValue()+this.getValue();
+		return new Credit(result);
+	}
+
+	@Override
+	public int compareTo(Credit credit) {
+		
+		int result=Float.compare(this.value, credit.value);
+		return result;
 	}
 	
 }
