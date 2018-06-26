@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.intecs.machine.Credit;
@@ -15,17 +16,27 @@ import com.intecs.machine.exception.MachineException;
 class TestSetSugarLevel {
 	
 
-	private static final float ENOUGH_CREDIT = 5;
+
 	private static final int SUGAR_LEVEL1 = 1;
 
+	private Machine machine;
+	private Credit credit;
+	private Key key;
+	
+	@BeforeEach
+	public void initialize() {
+		
+		machine = new Machine();
+		credit = new Credit(CreditValue.ENOUGH_CREDIT);
+		key = new Key(credit, "");
+		machine.insertKey(key);
+		
+	}
+	
+	
 	@Test
 	void testValidSelection() {
 
-		Machine machine = new Machine();
-		Credit credit = new Credit(ENOUGH_CREDIT);
-		Key key = new Key(credit, "testChargeEmptyKey1");
-		
-		machine.insertKey(key);
 		
 		try {
 	
@@ -35,7 +46,7 @@ class TestSetSugarLevel {
 				
 		} catch (MachineException e) {
 		
-			assertEquals(true, false);
+			fail(e);
 			
 		} 
 		
@@ -46,23 +57,21 @@ class TestSetSugarLevel {
 	@Test
 	void testInvalidSelection1() {
 
-		Machine machine = new Machine();
-		Credit credit = new Credit(ENOUGH_CREDIT);
-		Key key = new Key(credit, "testChargeEmptyKey1");
-		
-		machine.insertKey(key);
 		
 		try {
 	
 			machine.setSugarLevel(7);
+			assertEquals(false,true);
 				
-		} catch (MachineException e) {
-		
-			System.out.println("Eccezione: "+e.getMessage());		
-			MachineException assertException = new InvalidSugarLevel();
-			assertEquals(assertException, e);
+		} catch (InvalidSugarLevel e) {
 			
-		} 
+			//Do nothing
+			
+		} catch (MachineException e) {			
+		
+			fail(e);
+		
+		}
 		
 	}
 
