@@ -2,9 +2,9 @@ package com.intecs.machine;
 
 public class SugarLevel {
 
-	int level;
-	final int maxLevel = 5;
-	final int minLevel = 1;
+	private int level;
+	private final int maxLevel = 5;
+	private final int minLevel = 1;
 	
 	public SugarLevel() {
 
