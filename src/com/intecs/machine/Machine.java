@@ -19,6 +19,7 @@ public class Machine {
 	private SugarLevel sugarLevel;
 	private static float keyBound = 10;
 	private static Credit keyboundCredit=new Credit(keyBound);
+	private Configurator configurator = Configurator.getInstance();
 	
 	private Map costTable;
 
@@ -26,6 +27,10 @@ public class Machine {
 
 		key = null;
 		sugarLevel = new SugarLevel();
+		
+		
+//        Map<String, ?> result = configurator.initializeBeverageType();
+       
 		costTable = new HashMap<String, Float>();
 		costTable.put("Caffe", 0.4f);
 		costTable.put("Cappucino", 0.5f);
@@ -60,6 +65,7 @@ public class Machine {
 	public Beverage buy(BeverageType _type) throws KeyNotPresent, OutOfAvailableCredit, InvalidBeverage {
 
 		Beverage beverage = null;
+		Sugar sugar=new Sugar(sugarLevel);
 
 		if (!(checkKey()))
 			throw new KeyNotPresent();
@@ -69,42 +75,42 @@ public class Machine {
 
 			case ("Caffe"):
 
-				if (!(checkCredit((float) costTable.get("Caffe"))))
+				if (!(checkCredit(new Credit((float)costTable.get("Caffe")))))
 					throw new OutOfAvailableCredit();
 				else
-					beverage = new Coffe(_type, new Sugar(this.sugarLevel.getLevel()));
+					beverage = new Coffe(_type, sugar);
 				break;
 
 			case ("Cappuccino"):
 
-				if (!(checkCredit((float) costTable.get("Cappucino"))))
+				if (!(checkCredit(new Credit((float) costTable.get("Cappucino")))))
 					throw new OutOfAvailableCredit();
 				else
-					beverage = new Cappuccino(_type, new Sugar(this.sugarLevel.getLevel()));
+					beverage = new Cappuccino(_type, sugar);
 				break;
 
 			case ("Caffelatte"):
 
-				if (!(checkCredit((float) costTable.get("Caffelatte"))))
+				if (!(checkCredit(new Credit((float) costTable.get("Caffelatte")))))
 					throw new OutOfAvailableCredit();
 				else
-					beverage = new Latte(_type, new Sugar(this.sugarLevel.getLevel()));
+					beverage = new Latte(_type, sugar);
 				break;
 
 			case ("Cioccolata"):
 
-				if (!(checkCredit((float) costTable.get("Cioccolata"))))
+				if (!(checkCredit(new Credit((float) costTable.get("Cioccolata")))))
 					throw new OutOfAvailableCredit();
 				else
-					beverage = new Chocolate(_type, new Sugar(this.sugarLevel.getLevel()));
+					beverage = new Chocolate(_type, sugar);
 				break;
 
 			case ("Tè"):
 
-				if (!(checkCredit((float) costTable.get("Tè"))))
+				if (!(checkCredit(new Credit((float) costTable.get("Tè")))))
 					throw new OutOfAvailableCredit();
 				else
-					beverage = new Te(_type, new Sugar(this.sugarLevel.getLevel()));
+					beverage = new Te(_type, sugar);
 				break;
 
 			default:
@@ -125,18 +131,20 @@ public class Machine {
 
 		Credit total = credit.sum(key.getCredit());
 
-		
 		if(total.compareTo(keyboundCredit)<=0) {
 
 			key.setCredit(total);
 
-		} else if (total.getValue() > keyBound && key.getCredit().getValue() < keyBound)
+		} else if (total.compareTo(keyboundCredit) == 1 && keyboundCredit.compareTo(key.getCredit()) == 1)
 			throw new CreditExceedsBound();
 
 		else
 			throw new FullCredit();
 
 	}
+	
+	
+	
 	
 
 	private Boolean checkKey() {
@@ -149,17 +157,19 @@ public class Machine {
 		return result;
 
 	}
-
-	private Boolean checkCredit(float cost) {
+	
+	
+	private Boolean checkCredit(Credit credit) {
 
 		Boolean result = false;
 
-		if (key.getCredit().getValue() >= cost)
+		if (credit.compareTo(key.getCredit())<=0)
 			result = true;
 
 		return result;
 
 	}
+
 
 	public SugarLevel getSugarLevel() {
 

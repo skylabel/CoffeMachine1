@@ -12,6 +12,7 @@ import com.intecs.beverage.Sugar;
 import com.intecs.machine.Credit;
 import com.intecs.machine.Key;
 import com.intecs.machine.Machine;
+import com.intecs.machine.SugarLevel;
 import com.intecs.machine.exception.InvalidBeverage;
 import com.intecs.machine.exception.KeyNotPresent;
 import com.intecs.machine.exception.MachineException;
@@ -110,9 +111,9 @@ class TestBuy {
 		try {
 				
 			machine.setSugarLevel(4);
-				
+			
 			Beverage beverage = machine.buy(type);
-			Beverage beverage2=new Beverage(type, new Sugar(4));
+			Beverage beverage2=new Beverage(type, new Sugar(machine.getSugarLevel()));
 			assertEquals(beverage,beverage2);
 
 				
@@ -133,9 +134,10 @@ class TestBuy {
 		machine.insertKey(key);
 		
 		try {
+			SugarLevel level=new SugarLevel();
 			
 			Beverage beverage = machine.buy(type);
-			Beverage beverage2 = new Beverage(type, new Sugar(3));
+			Beverage beverage2 = new Beverage(type, new Sugar(level));
 			assertEquals(beverage,beverage2);
 
 			

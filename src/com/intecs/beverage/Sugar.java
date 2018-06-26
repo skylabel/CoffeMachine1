@@ -1,13 +1,21 @@
 package com.intecs.beverage;
 
+import com.intecs.machine.SugarLevel;
+
 public class Sugar {
 	
 	private float quantity;
 	
-	public Sugar(float quantity) {
-
-		this.quantity = quantity;
-
+//	public Sugar(float quantity) {
+//
+//		this.quantity = quantity;
+//
+//	}
+	
+	public Sugar(SugarLevel level) {
+		
+		this.quantity = level.getLevel();
+		
 	}
 
 	public float getQuantity() {
