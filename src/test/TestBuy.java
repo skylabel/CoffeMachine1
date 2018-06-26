@@ -62,11 +62,13 @@ class TestBuy {
 			
 			machine.buy(type_1);
 		
+		} catch (InvalidBeverage e) {
+		
+			//Do nothing
+			
 		} catch (MachineException e) {
 			
-			System.out.println("Eccezione: "+e.getMessage());
-			MachineException assertException = new InvalidBeverage();
-			assertEquals(assertException, e);
+			fail(e);
 			
 		} 
 		
@@ -83,11 +85,13 @@ class TestBuy {
 			
 			machine.buy(type);
 		
+		} catch (OutOfAvailableCredit e) {
+			
+			//Do nothing
+			
 		} catch (MachineException e) {
 			
-			System.out.println("Eccezione: "+e.getMessage());
-			MachineException assertException = new OutOfAvailableCredit();
-			assertEquals(assertException, e);
+			fail(e);
 			
 		} 
 	   
@@ -95,31 +99,31 @@ class TestBuy {
 	
 	
 	
-		@Test
-		void testBuySelectingSugarLevel() {
+	@Test
+	void testBuySelectingSugarLevel() {
 			  
-			Key key = new Key(new Credit(5f), "");
+		Key key = new Key(new Credit(5f), "");
 			
-			machine.insertKey(key);
+		machine.insertKey(key);
 			
 			
-			try {
+		try {
 				
-				machine.setSugarLevel(4);
+			machine.setSugarLevel(4);
 				
-				Beverage beverage = machine.buy(type);
-				Beverage beverage2=new Beverage(type, new Sugar(4));
-				assertEquals(beverage,beverage2);
+			Beverage beverage = machine.buy(type);
+			Beverage beverage2=new Beverage(type, new Sugar(4));
+			assertEquals(beverage,beverage2);
 
 				
-			} catch (MachineException e) {
-			   e.printStackTrace();
+		} catch (MachineException e) {
+		
 				assertEquals(true, false);
 			
-			} 
+		} 
 		
 		
-		  }
+	}
 
 	@Test
 	void testBuyOK() {
@@ -142,6 +146,5 @@ class TestBuy {
 		} 
 	
 	}
-	
 	  
 }
