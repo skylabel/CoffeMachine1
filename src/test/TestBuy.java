@@ -118,7 +118,7 @@ class TestBuy {
 
 		} catch (MachineException e) {
 		
-				assertEquals(true, false);
+				fail(e);
 			
 		} 
 		

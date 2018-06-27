@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.intecs.beverage.Beverage;
+import com.intecs.beverage.BeverageFactory;
 import com.intecs.beverage.BeverageType;
 import com.intecs.beverage.Cappuccino;
 import com.intecs.beverage.Chocolate;
@@ -17,37 +18,35 @@ public class Machine {
 
 	private Key key;
 	private SugarLevel sugarLevel;
-	private static float keyBound = 10;
-	private static Credit keyboundCredit=new Credit(keyBound);
-	private Configurator configurator = Configurator.getInstance();
-	private Map costTable;
+	private Configurator configurator;
+	private Map<String, Float> costTable;
+	private Map <String , BeverageType> beverageMap;
+	private BeverageFactory factory;
+	private Map<BeverageType,Float> costTable1;
 
 	public Machine() {
 		key = null;
 		sugarLevel = new SugarLevel();
-//        Map<String, ?> result = configurator.initializeBeverageType();
+		configurator=Configurator.getInstance();
+		costTable1=configurator.initializeBeverageType2();
+		factory=new BeverageFactory();
+        costTable = configurator.initializeBeverageType();
+        beverageMap=new HashMap<>();
+        costTable.forEach((k,v)->beverageMap.put(k, new BeverageType(k)));
+        
+        
        
-		costTable = new HashMap<BeverageType, Float>();
-		costTable.put("Caffe", 0.4f);
-		costTable.put("Cappucino", 0.5f);
-		costTable.put("Caffelatte", 0.5f);
-		costTable.put("Cioccolata", 0.4f);
-		costTable.put("Te", 0.4f);
 	}
 
 	public void insertKey(Key _key) {
-
 		key = _key;
-
 	}
 
 	public Key removeKey() {
-
 		Key result = key;
 		key = null;
 		System.out.println("Chiave rimossa.");
 		return result;
-
 	}
 
 	public void setSugarLevel(int level) throws InvalidSugarLevel {
@@ -62,31 +61,51 @@ public class Machine {
 		if (!(checkKey()))
 			throw new KeyNotPresent();
 		
-		if (type.equals(new BeverageType("Caffe"))) {
-				if (!(checkCredit((Float) costTable.get("Caffe"))))
-					throw new OutOfAvailableCredit();
-				beverage = new Coffe(type, sugar);
-		} else if (type.equals(new BeverageType("Cappuccino"))) {
-				if (!(checkCredit((Float) costTable.get("Cappucino"))))
-					throw new OutOfAvailableCredit();
-				beverage = new Cappuccino(type, sugar);
-		} else if (type.equals(new BeverageType("Caffelatte"))) {
-				if (!(checkCredit((Float) costTable.get("Caffelatte"))))
-					throw new OutOfAvailableCredit();
-				beverage = new Latte(type, sugar);
-		} else if (type.equals(new BeverageType("Cioccolata"))) {
-				if (!(checkCredit((Float) costTable.get("Cioccolata"))))
-					throw new OutOfAvailableCredit();
-				beverage = new Chocolate(type, sugar);
-		} else if (type.equals(new BeverageType("Tè"))) {
-				if (!(checkCredit((Float) costTable.get("Tè"))))
-					throw new OutOfAvailableCredit();
-				beverage = new Te(type, sugar);
-		} else
+		
+		Float resultQuery = costTable1.get(type);
+		
+		if(resultQuery==null)
 			throw new InvalidBeverage();
 		
+		if (!(checkCredit(resultQuery))) 
+			throw new OutOfAvailableCredit();
+		
+		beverage = factory.createBeverage(type, sugar);
 		return beverage;
 	}
+	
+//	public Beverage buy(BeverageType type) throws KeyNotPresent, OutOfAvailableCredit, InvalidBeverage {
+//		Beverage beverage = null;
+//		Sugar sugar=new Sugar(sugarLevel);
+//		
+//		if (!(checkKey()))
+//			throw new KeyNotPresent();
+//		
+//		if (type.equals(beverageMap.get("Caffe"))) {
+//			if (!(checkCredit(costTable.get("Caffe"))))
+//				throw new OutOfAvailableCredit();
+//			beverage = new Coffe(type, sugar);
+//		} else if (type.equals(beverageMap.get("Cappuccino"))) {
+//			if (!(checkCredit(costTable.get("Cappucino"))))
+//				throw new OutOfAvailableCredit();
+//			beverage = new Cappuccino(type, sugar);
+//		} else if (type.equals(beverageMap.get("Caffelatte"))) {
+//			if (!(checkCredit(costTable.get("Caffelatte"))))
+//				throw new OutOfAvailableCredit();
+//			beverage = new Latte(type, sugar);
+//		} else if (type.equals(beverageMap.get("Cioccolata"))) {
+//			if (!(checkCredit(costTable.get("Cioccolata"))))
+//				throw new OutOfAvailableCredit();
+//			beverage = new Chocolate(type, sugar);
+//		} else if (type.equals(beverageMap.get("Tè"))) {
+//			if (!(checkCredit(costTable.get("Tè"))))
+//				throw new OutOfAvailableCredit();
+//			beverage = new Te(type, sugar);
+//		} else
+//			throw new InvalidBeverage();
+//		
+//		return beverage;
+//	}
 
 	public void chargeKey(Credit credit) throws KeyNotPresent, CreditExceedsBound, FullCredit {
 
@@ -95,13 +114,12 @@ public class Machine {
 
 		Credit total = credit.sum(key.getCredit());
 
-		if(total.compareTo(keyboundCredit)<=0) {
-
+ 		if(total.compareTo(Key.KEY_BOUND)<=0) {
 			key.setCredit(total);
-
-		} else if (total.compareTo(keyboundCredit) == 1 && keyboundCredit.compareTo(key.getCredit()) == 1)
+		}
+		else if (total.compareTo(Key.KEY_BOUND) == 1 && Key.KEY_BOUND.compareTo(key.getCredit()) == 1)
 			throw new CreditExceedsBound();
-
+		
 		else
 			throw new FullCredit();
 

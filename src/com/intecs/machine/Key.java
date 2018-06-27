@@ -4,6 +4,8 @@ public class Key {
 	
 	private Credit credit;
 	private String id;
+	final static Credit KEY_BOUND = new Credit(10f);
+	
 	
 	public Key() {
 		
