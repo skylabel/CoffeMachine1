@@ -2,24 +2,32 @@ package com.intecs.machine;
 
 public class Key {
 	
-	private Credit credit;
+	private Money credit;
 	private String id;
-	final static Credit KEY_BOUND = new Credit(10f);
+	final static Money KEY_BOUND = new Money(10f);
 	
 	
 	public Key() {
 		
-		this(Credit.zero(), "");
+		this(Money.zero(), "");
 		
 	}
 	
-	public Key(Credit credit, String id) {
+	public Key(Money credit, String id) {
+		if(credit==null)
+			throw new NullPointerException();
 		
 		this.credit = credit;
 		this.id = id;
+		
 	
 	}
 	
+	public Key(Money credit) {
+		this(credit, "");
+		
+	}
+
 	public static Key empty() {
 
 		return new Key();
@@ -38,13 +46,13 @@ public class Key {
 		
 	}
 
-	public Credit getCredit() {
+	public Money getCredit() {
 		
 		return credit;
 	
 	}
 	
-	public void setCredit(Credit credit) {
+	public void setCredit(Money credit) {
 	
 		this.credit = credit;
 	

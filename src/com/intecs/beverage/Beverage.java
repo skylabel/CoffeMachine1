@@ -19,4 +19,12 @@ public class Beverage {
 		if(type.equals(c.type) && sugar.equals(c.sugar)) result = true;
 		return result;
 	}
+
+	public BeverageType getType() {
+		return this.type;
+	}
+	
+	public Sugar getSugar() {
+		return this.sugar;
+	}
 }

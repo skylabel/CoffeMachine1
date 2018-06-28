@@ -1,20 +1,20 @@
 package com.intecs.machine;
 
-public class Credit implements Comparable<Credit>{
+public class Money implements Comparable<Money>{
 	
 	private final Float value;
 	private static final float ZERO_CREDIT = 0f;
 	
-	public Credit() {
+	public Money() {
 		this(ZERO_CREDIT);
 	}
 	
-	public Credit(Float value) {
+	public Money(Float value) {
 		this.value = value; 		
 	}
 	
-	public static Credit zero() {
-		return new Credit();
+	public static Money zero() {
+		return new Money();
 	}
 
 
@@ -26,20 +26,20 @@ public class Credit implements Comparable<Credit>{
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-		if (!(obj instanceof Credit)) return false;
+		if (!(obj instanceof Money)) return false;
 		
-		Credit c = (Credit) obj;
+		Money c = (Money) obj;
 		boolean result = Float.compare(this.value, c.value) == 0;
 		return result;
 	}
 	
-	public Credit sum(Credit c1) {
+	public Money sum(Money c1) {
 		Float result=c1.value+this.value;
-		return new Credit(result);
+		return new Money(result);
 	}
 
 	@Override
-	public int compareTo(Credit credit) {
+	public int compareTo(Money credit) {
 		int result=Float.compare(this.value, credit.value);
 		return result;
 	}

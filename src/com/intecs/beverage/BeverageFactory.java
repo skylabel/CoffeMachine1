@@ -8,16 +8,17 @@ public class BeverageFactory {
 		
 	public Beverage createBeverage(BeverageType type,Sugar sugar) {
 		Beverage beverage=null;
+		BeverageName name = type.getName();
 		
-		if(type.equals(new BeverageType("Caffe"))) {
+		if(name.equals(new BeverageName("Caffe"))) {
 			beverage = new Coffe(type, sugar);
-		} else if(type.equals(new BeverageType("Cappuccino"))) {
+		} else if(name.equals(new BeverageName("Cappuccino"))) {
 			beverage = new Cappuccino(type, sugar);
-		} else if(type.equals(new BeverageType("Caffelatte"))) {
+		} else if(name.equals(new BeverageName("Caffelatte"))) {
 			beverage = new Latte(type, sugar);
-		} else if(type.equals(new BeverageType("Cioccolata"))) {
+		} else if(name.equals(new BeverageName("Cioccolata"))) {
 			beverage = new Chocolate(type, sugar);
-		} else if(type.equals(new BeverageType("Tè"))) {
+		} else if(name.equals(new BeverageName("Tè"))) {
 			beverage = new Te(type, sugar);
 		}
 		
