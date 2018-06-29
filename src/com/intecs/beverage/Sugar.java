@@ -3,6 +3,7 @@ package com.intecs.beverage;
 import com.intecs.machine.SugarLevel;
 
 public class Sugar {
+	
 	private float quantity;
 	
 	public Sugar(SugarLevel level) {
@@ -18,4 +19,5 @@ public class Sugar {
 		boolean result = Float.compare(this.quantity, c.quantity) == 0;
 		return result;
 	}
+
 }

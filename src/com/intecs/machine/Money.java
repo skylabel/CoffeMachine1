@@ -10,6 +10,8 @@ public class Money implements Comparable<Money>{
 	}
 	
 	public Money(Float value) {
+		if(value==null) throw new NullPointerException();
+		if(value<0) throw new IllegalArgumentException();
 		this.value = value; 		
 	}
 	

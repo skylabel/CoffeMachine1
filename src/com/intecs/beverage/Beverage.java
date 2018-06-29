@@ -1,10 +1,11 @@
 package com.intecs.beverage;
 
 public class Beverage {
-	private final BeverageType type;
+	
+	private final BeverageProperties type;
 	private final Sugar sugar;
 
-	public Beverage(BeverageType _type, Sugar sugar) {
+	public Beverage(BeverageProperties _type, Sugar sugar) {
 		this.type = _type;
 		this.sugar = sugar;
 	}
@@ -20,11 +21,12 @@ public class Beverage {
 		return result;
 	}
 
-	public BeverageType getType() {
+	public BeverageProperties getType() {
 		return this.type;
 	}
 	
 	public Sugar getSugar() {
 		return this.sugar;
 	}
+	
 }

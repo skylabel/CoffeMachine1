@@ -2,10 +2,8 @@ package com.intecs.beverage;
 
 public class Cappuccino extends Beverage {
 
-	public Cappuccino(BeverageType type, Sugar sugar) {
-		
+	public Cappuccino(BeverageProperties type, Sugar sugar) {
 		super(type, sugar);
-		
 	}
 
 }

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.intecs.beverage.BeverageType;
+import com.intecs.beverage.BeverageProperties;
 import com.intecs.machine.Money;
 import com.intecs.machine.Key;
 import com.intecs.machine.Machine;
@@ -13,6 +13,7 @@ import com.intecs.machine.exception.CreditExceedsBound;
 import com.intecs.machine.exception.FullCredit;
 import com.intecs.machine.exception.KeyNotPresent;
 import com.intecs.machine.exception.MachineException;
+import com.intecs.machine.exception.MachineIsOutOfService;
 
 class TestCharge {
 
@@ -24,7 +25,7 @@ class TestCharge {
 	}
 
 	@Test
-	void testChargeEmptyKey() throws KeyNotPresent, CreditExceedsBound, FullCredit {
+	void testChargeEmptyKey() throws KeyNotPresent, CreditExceedsBound, FullCredit, MachineIsOutOfService {
 		Key key = Key.empty();
 		machine.insertKey(key);
 
@@ -34,7 +35,7 @@ class TestCharge {
 	}
 
 	@Test
-	void testChargeWithoutKey() {
+	void testChargeWithoutKey() throws CreditExceedsBound, FullCredit, MachineIsOutOfService {
 
 		try {
 			Money amount = new Money(CreditValue.FIFTY_COIN);
@@ -42,13 +43,11 @@ class TestCharge {
 			fail("exception expected");
 		} catch (KeyNotPresent e) {
 			// Do nothing
-		} catch (MachineException e) {
-			fail(e);
-		} 
+		}
 	}
 
 	@Test
-	void testChargeTooMuchCredit() {
+	void testChargeTooMuchCredit() throws KeyNotPresent, FullCredit, MachineIsOutOfService {
 		Money credit = new Money(CreditValue.CLOSE_TO_THE_BUONDARY);
 		Key key = new Key(credit);
 		machine.insertKey(key);
@@ -59,15 +58,12 @@ class TestCharge {
 			fail("Exception expected.");
 		} catch (CreditExceedsBound e) {
 			// Do nothing
-		} catch (MachineException e) {
-			fail(e);
 		}
 	}
 
 	@Test
-	void testChargeFullCredit() {
-		Money credit = new Money(CreditValue.FULL_CREDIT);
-		Key key = new Key(credit);
+	void testChargeFullCredit() throws KeyNotPresent, CreditExceedsBound, MachineIsOutOfService {
+		Key key = Key.full();
 		machine.insertKey(key);
 
 		try {
@@ -76,14 +72,12 @@ class TestCharge {
 			fail("Exception expected.");
 		} catch (FullCredit e) {
 			// Do nothing
-		} catch (MachineException e) {
-			fail(e);
 		}
 	}
 
 	@Test
-	void testFullCreditLimit1() throws KeyNotPresent, CreditExceedsBound, FullCredit {
-		Key key = new Key(new Money(CreditValue.FULL_CREDIT), "");
+	void testFullCreditLimit1() throws KeyNotPresent, CreditExceedsBound, FullCredit, MachineIsOutOfService {
+		Key key = Key.full();
 		machine.insertKey(key);
 		
 		Money oldCredit = key.getCredit();
@@ -92,7 +86,7 @@ class TestCharge {
 	}
 	
 	@Test
-	void testIncreaseCredit() throws KeyNotPresent, CreditExceedsBound, FullCredit {
+	void testIncreaseCredit() throws KeyNotPresent, CreditExceedsBound, FullCredit, MachineIsOutOfService {
 		Key key = new Key(new Money(2.0f));
 		machine.insertKey(key);
 		
