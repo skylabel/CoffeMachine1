@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import com.intecs.machine.Machine;
 import com.intecs.machine.OutOfService;
 import com.intecs.machine.SugarLevel;
-import com.intecs.machine.exception.InvalidSugarLevel;
-import com.intecs.machine.exception.MachineIsOutOfService;
+import com.intecs.machine.exception.InvalidSugarLevelException;
+import com.intecs.machine.exception.MachineIsOutOfServiceException;
 
 class TestSetSugarLevel {
 	
@@ -22,57 +22,57 @@ class TestSetSugarLevel {
 	}
 	
 	@Test
-	void testSetSugarLevelToNONE() throws InvalidSugarLevel, MachineIsOutOfService {
+	void testSetSugarLevelToNONE() throws InvalidSugarLevelException, MachineIsOutOfServiceException {
 		machine.setSugarLevel(ISugarLevels.NONE);
 		SugarLevel expectedlevel = new SugarLevel(ISugarLevels.NONE);
 		assertEquals(expectedlevel, machine.getSugarLevel());
 	}
 	
 	@Test
-	void testSetSugarLevelToMILD() throws InvalidSugarLevel, MachineIsOutOfService {
+	void testSetSugarLevelToMILD() throws InvalidSugarLevelException, MachineIsOutOfServiceException {
 		machine.setSugarLevel(ISugarLevels.MILD);
 		SugarLevel expectedlevel = new SugarLevel(ISugarLevels.MILD);
 		assertEquals(expectedlevel, machine.getSugarLevel());
 	}
 	
 	@Test
-	void testSetSugarLevelToMEDIUM() throws InvalidSugarLevel, MachineIsOutOfService {
+	void testSetSugarLevelToMEDIUM() throws InvalidSugarLevelException, MachineIsOutOfServiceException {
 		machine.setSugarLevel(ISugarLevels.MEDIUM);
 		SugarLevel expectedlevel = new SugarLevel(ISugarLevels.MEDIUM);
 		assertEquals(expectedlevel, machine.getSugarLevel());
 	}
 	
 	@Test
-	void testSetSugarLevelToSWEET() throws InvalidSugarLevel, MachineIsOutOfService {
+	void testSetSugarLevelToSWEET() throws InvalidSugarLevelException, MachineIsOutOfServiceException {
 		machine.setSugarLevel(ISugarLevels.SWEET);
 		SugarLevel expectedlevel = new SugarLevel(ISugarLevels.SWEET);
 		assertEquals(expectedlevel, machine.getSugarLevel());
 	}
 	
 	@Test
-	void testSetSugarLevelToVERYSWEET() throws InvalidSugarLevel, MachineIsOutOfService {
+	void testSetSugarLevelToVERYSWEET() throws InvalidSugarLevelException, MachineIsOutOfServiceException {
 		machine.setSugarLevel(ISugarLevels.VERY_SWEET);
 		SugarLevel expectedlevel = new SugarLevel(ISugarLevels.VERY_SWEET);		
 		assertEquals(expectedlevel, machine.getSugarLevel());
 	}
 	
 	@Test
-	void testInvalidSelection() throws MachineIsOutOfService {
+	void testInvalidSelection() throws MachineIsOutOfServiceException {
 		try {
 			machine.setSugarLevel(ISugarLevels.INVALID);
 			fail("Exception expected.");
-		} catch (InvalidSugarLevel e) {
+		} catch (InvalidSugarLevelException e) {
 			//Do nothing
 		} 
 	}
 	
 	@Test
-	void testSetSugarOutOfService() throws InvalidSugarLevel {
+	void testSetSugarOutOfService() throws InvalidSugarLevelException {
 		Machine machineOutOfService = new Machine(new OutOfService());
 		try {
 			machineOutOfService.setSugarLevel(ISugarLevels.MEDIUM);
 			fail("Exception expected.");
-		} catch (MachineIsOutOfService e) {
+		} catch (MachineIsOutOfServiceException e) {
 			//Do nothing
 		}
 	}

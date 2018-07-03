@@ -1,8 +1,8 @@
 package com.intecs.machine.exception;
 
-public class CreditExceedsBound extends MachineException {
+public class CreditExceedsBoundException extends MachineException {
 
-	public CreditExceedsBound() {
+	public CreditExceedsBoundException() {
 		
 		super("Il nuovo credito eccederebbe la soglia.");
 		
@@ -13,7 +13,7 @@ public class CreditExceedsBound extends MachineException {
 	
 		if (this == obj) return true;
 		
-		if (!(obj instanceof CreditExceedsBound)) return false;
+		if (!(obj instanceof CreditExceedsBoundException)) return false;
 		else return true;
 		
 	}

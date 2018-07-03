@@ -7,6 +7,7 @@ public class Sugar {
 	private float quantity;
 	
 	public Sugar(SugarLevel level) {
+		if(level==null) throw new NullPointerException("Sugar Level is null");
 		this.quantity = level.getLevel();
 	}
 

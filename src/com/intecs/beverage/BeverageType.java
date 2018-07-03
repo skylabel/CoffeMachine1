@@ -4,8 +4,9 @@ public class BeverageType {
 	
 	private String name;
 	
-	public BeverageType(String _name) {
-		this.name = _name;
+	public BeverageType(String name) {
+		if(name==null) throw new NullPointerException("Name is null");
+		this.name = name;
 	}
 	
 	public BeverageType() {

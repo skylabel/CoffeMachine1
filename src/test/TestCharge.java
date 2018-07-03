@@ -9,15 +9,16 @@ import com.intecs.beverage.BeverageProperties;
 import com.intecs.machine.Money;
 import com.intecs.machine.Key;
 import com.intecs.machine.Machine;
-import com.intecs.machine.exception.CreditExceedsBound;
-import com.intecs.machine.exception.FullCredit;
-import com.intecs.machine.exception.KeyNotPresent;
+import com.intecs.machine.exception.CreditExceedsBoundException;
+import com.intecs.machine.exception.FullCreditException;
+import com.intecs.machine.exception.KeyNotPresentException;
 import com.intecs.machine.exception.MachineException;
-import com.intecs.machine.exception.MachineIsOutOfService;
+import com.intecs.machine.exception.MachineIsOutOfServiceException;
 
 class TestCharge {
 
 	private Machine machine;
+	
 
 	@BeforeEach
 	void initialize() {
@@ -25,58 +26,58 @@ class TestCharge {
 	}
 
 	@Test
-	void testChargeEmptyKey() throws KeyNotPresent, CreditExceedsBound, FullCredit, MachineIsOutOfService {
+	void testChargeEmptyKey() throws KeyNotPresentException, CreditExceedsBoundException, FullCreditException, MachineIsOutOfServiceException {
 		Key key = Key.empty();
 		machine.insertKey(key);
 
-		Money amount = new Money(CreditValue.FIFTY_COIN);
+		Money amount = new Money(ICreditValue.OFIFTY_CREDIT);
 		machine.chargeKey(amount);
 		assertEquals(amount, key.getCredit());
 	}
 
 	@Test
-	void testChargeWithoutKey() throws CreditExceedsBound, FullCredit, MachineIsOutOfService {
+	void testChargeWithoutKey() throws CreditExceedsBoundException, FullCreditException, MachineIsOutOfServiceException {
 
 		try {
-			Money amount = new Money(CreditValue.FIFTY_COIN);
+			Money amount = new Money(ICreditValue.OFIFTY_CREDIT);
 			machine.chargeKey(amount);
 			fail("exception expected");
-		} catch (KeyNotPresent e) {
+		} catch (KeyNotPresentException e) {
 			// Do nothing
 		}
 	}
 
 	@Test
-	void testChargeTooMuchCredit() throws KeyNotPresent, FullCredit, MachineIsOutOfService {
-		Money credit = new Money(CreditValue.CLOSE_TO_THE_BUONDARY);
+	void testChargeTooMuchCredit() throws KeyNotPresentException, FullCreditException, MachineIsOutOfServiceException {
+		Money credit = new Money(ICreditValue.CLOSE_TO_THE_BUONDARY);
 		Key key = new Key(credit);
 		machine.insertKey(key);
 
 		try {
-			Money amount = new Money(CreditValue.ENOUGH_CREDIT);
+			Money amount = new Money(ICreditValue.ENOUGH_CREDIT);
 			machine.chargeKey(amount);
 			fail("Exception expected.");
-		} catch (CreditExceedsBound e) {
+		} catch (CreditExceedsBoundException e) {
 			// Do nothing
 		}
 	}
 
 	@Test
-	void testChargeFullCredit() throws KeyNotPresent, CreditExceedsBound, MachineIsOutOfService {
+	void testChargeFullCredit() throws KeyNotPresentException, CreditExceedsBoundException, MachineIsOutOfServiceException {
 		Key key = Key.full();
 		machine.insertKey(key);
 
 		try {
-			Money amount = new Money(CreditValue.FIFTY_COIN);
+			Money amount = new Money(ICreditValue.OFIFTY_CREDIT);
 			machine.chargeKey(amount);
 			fail("Exception expected.");
-		} catch (FullCredit e) {
+		} catch (FullCreditException e) {
 			// Do nothing
 		}
 	}
 
 	@Test
-	void testFullCreditLimit1() throws KeyNotPresent, CreditExceedsBound, FullCredit, MachineIsOutOfService {
+	void testFullCreditLimit1() throws KeyNotPresentException, CreditExceedsBoundException, FullCreditException, MachineIsOutOfServiceException {
 		Key key = Key.full();
 		machine.insertKey(key);
 		
@@ -86,12 +87,25 @@ class TestCharge {
 	}
 	
 	@Test
-	void testIncreaseCredit() throws KeyNotPresent, CreditExceedsBound, FullCredit, MachineIsOutOfService {
+	void testIncreaseCredit() throws KeyNotPresentException, CreditExceedsBoundException, FullCreditException, MachineIsOutOfServiceException {
 		Key key = new Key(new Money(2.0f));
 		machine.insertKey(key);
 		
 		machine.chargeKey(new Money(2.0f));
 		assertEquals(new Money(4.0f), key.getCredit());
+	}
+	
+	@Test
+	void testIncreaseWithNegativeCredit() throws KeyNotPresentException, CreditExceedsBoundException, FullCreditException, MachineIsOutOfServiceException {
+		Key key = new Key(new Money(2.0f));
+		machine.insertKey(key);
+		
+		
+		assertThrows(IllegalArgumentException.class, () -> {
+			machine.chargeKey(new Money(-2.0f));
+	    });
+		
+		
 	}
 	
 }

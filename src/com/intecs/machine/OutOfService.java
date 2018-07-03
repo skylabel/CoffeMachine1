@@ -2,40 +2,40 @@ package com.intecs.machine;
 
 import com.intecs.beverage.Beverage;
 import com.intecs.beverage.BeverageType;
-import com.intecs.machine.exception.KeyNotPresent;
-import com.intecs.machine.exception.MachineIsOutOfService;
+import com.intecs.machine.exception.KeyNotPresentException;
+import com.intecs.machine.exception.MachineIsOutOfServiceException;
 
 public class OutOfService extends State{
 
 	@Override
-	public void chargeKey(Money credit) throws MachineIsOutOfService {
-		throw new MachineIsOutOfService();
+	public void chargeKey(Money credit) throws MachineIsOutOfServiceException {
+		throw new MachineIsOutOfServiceException();
 	}
 
 	@Override
-	public void setSugarLevel(int level) throws MachineIsOutOfService {
-		throw new MachineIsOutOfService();
+	public void setSugarLevel(int level) throws MachineIsOutOfServiceException {
+		throw new MachineIsOutOfServiceException();
 		
 	}
 
 	@Override
-	public Beverage buy(BeverageType name, Machine machine) throws MachineIsOutOfService, KeyNotPresent {
-		throw new MachineIsOutOfService();
+	public Beverage buy(BeverageType name, Machine machine) throws MachineIsOutOfServiceException, KeyNotPresentException {
+		throw new MachineIsOutOfServiceException();
 	}
 
 	@Override
-	public void removeKey(Machine machine) throws MachineIsOutOfService {
-		throw new MachineIsOutOfService();		
+	public void removeKey(Machine machine) throws MachineIsOutOfServiceException {
+		throw new MachineIsOutOfServiceException();		
 	}
 
 	@Override
-	public void insertKey(Key key, Machine machine) throws MachineIsOutOfService {
-		throw new MachineIsOutOfService();		
+	public void insertKey(Key key, Machine machine) throws MachineIsOutOfServiceException {
+		throw new MachineIsOutOfServiceException();		
 	}
 
 	@Override
-	public SugarLevel getSugarLevel() throws MachineIsOutOfService {
-		throw new MachineIsOutOfService();		
+	public SugarLevel getSugarLevel() throws MachineIsOutOfServiceException {
+		throw new MachineIsOutOfServiceException();		
 	}
 
 }

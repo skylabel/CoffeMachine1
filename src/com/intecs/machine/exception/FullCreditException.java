@@ -1,8 +1,8 @@
 package com.intecs.machine.exception;
 
-public class FullCredit extends MachineException {
+public class FullCreditException extends MachineException {
 	
-	public FullCredit() {
+	public FullCreditException() {
 		
 		super("Limite credito già raggiunto.");
 		
@@ -13,7 +13,7 @@ public class FullCredit extends MachineException {
 	
 		if (this == obj) return true;
 		
-		if (!(obj instanceof FullCredit)) return false;
+		if (!(obj instanceof FullCreditException)) return false;
 		else return true;
 		
 	}

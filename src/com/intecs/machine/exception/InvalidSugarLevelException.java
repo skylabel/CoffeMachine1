@@ -1,8 +1,8 @@
 package com.intecs.machine.exception;
 
-public class InvalidSugarLevel extends InvalidSelection {
+public class InvalidSugarLevelException extends InvalidSelectionException {
 
-	public InvalidSugarLevel() {
+	public InvalidSugarLevelException() {
 		
 		super("Livello di zucchero non valido.");
 		
@@ -14,7 +14,7 @@ public class InvalidSugarLevel extends InvalidSelection {
 	
 		if (this == obj) return true;
 		
-		if (!(obj instanceof InvalidSugarLevel)) return false;
+		if (!(obj instanceof InvalidSugarLevelException)) return false;
 		else return true;
 		
 	}

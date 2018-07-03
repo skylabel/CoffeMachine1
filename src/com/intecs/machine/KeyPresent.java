@@ -1,18 +1,15 @@
 package com.intecs.machine;
 
-import java.util.HashSet;
-
 import com.intecs.beverage.Beverage;
 import com.intecs.beverage.BeverageProperties;
 import com.intecs.beverage.BeverageType;
 import com.intecs.beverage.Sugar;
-import com.intecs.machine.exception.CreditExceedsBound;
-import com.intecs.machine.exception.FullCredit;
-import com.intecs.machine.exception.InvalidBeverage;
-import com.intecs.machine.exception.KeyNotPresent;
-import com.intecs.machine.exception.MachineException;
-import com.intecs.machine.exception.MachineIsOutOfService;
-import com.intecs.machine.exception.OutOfAvailableCredit;
+import com.intecs.machine.exception.CreditExceedsBoundException;
+import com.intecs.machine.exception.FullCreditException;
+import com.intecs.machine.exception.InvalidBeverageException;
+import com.intecs.machine.exception.KeyNotPresentException;
+import com.intecs.machine.exception.MachineIsOutOfServiceException;
+import com.intecs.machine.exception.OutOfAvailableCreditException;
 
 public class KeyPresent extends InService {
 
@@ -26,33 +23,31 @@ public class KeyPresent extends InService {
 	}
 	
 	@Override
-	public Beverage buy(BeverageType type,Machine machine) throws MachineIsOutOfService, KeyNotPresent, InvalidBeverage, OutOfAvailableCredit {
+	public Beverage buy(BeverageType type,Machine machine) throws MachineIsOutOfServiceException, KeyNotPresentException, InvalidBeverageException, OutOfAvailableCreditException {
 		Beverage beverage = null;
 		Sugar sugar=new Sugar(getSugarLevel());
 		
-		BeverageProperties typetoBuy=machine.getBeverages().get(type);     //bTypes.get(name);
+		BeverageProperties typetoBuy=machine.getBeveragesMap().get(type);     
 		if(typetoBuy==null)
-			throw new InvalidBeverage();	
+			throw new InvalidBeverageException();	
 		
 	   Money cost=machine.getBeverageCost(type);
-		if (!(key.hasEnoughCredit(cost))) 
-			throw new OutOfAvailableCredit();
+	   if (!(key.hasEnoughCredit(cost))) 
+		   throw new OutOfAvailableCreditException();
+		key.decreaseCredit(cost);
 		
-		beverage = new Beverage(typetoBuy,sugar);    //factory.createBeverage(resultQuery, sugar);
+		beverage = new Beverage(typetoBuy,sugar);   
 		return beverage;
 	}
 	
 	@Override
-	public void chargeKey(Money credit) throws MachineIsOutOfService, CreditExceedsBound, FullCredit {
+	public void chargeKey(Money credit) throws MachineIsOutOfServiceException, CreditExceedsBoundException, FullCreditException {
 		key.increaseCredit(credit);	
 	}
-	
 	
 	@Override
 	public void insertKey(Key _key, Machine machine) {
 		//do nothing
-//		throw new MachineException();
-		
 	}
 	
     @Override

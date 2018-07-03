@@ -1,22 +1,16 @@
 package com.intecs.machine.exception;
 
-public class OutOfAvailableCredit extends MachineException {
+public class OutOfAvailableCreditException extends MachineException {
 	
-	public OutOfAvailableCredit() {
-		
+	public OutOfAvailableCreditException() {
 		super("Credito insufficiente.");
-		
 	}
-
 	
 	@Override
 	public boolean equals(Object obj) {
-	
 		if (this == obj) return true;
-		
-		if (!(obj instanceof OutOfAvailableCredit)) return false;
+		if (!(obj instanceof OutOfAvailableCreditException)) return false;
 		else return true;
-		
 	}
 	
 }

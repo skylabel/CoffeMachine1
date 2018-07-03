@@ -1,8 +1,8 @@
 package com.intecs.machine.exception;
 
-public class InvalidBeverage extends InvalidSelection {
+public class InvalidBeverageException extends InvalidSelectionException {
 	
-	public InvalidBeverage() {
+	public InvalidBeverageException() {
 		
 		super("Bevanda inesistente.");
 		
@@ -15,7 +15,7 @@ public class InvalidBeverage extends InvalidSelection {
 	
 		if (this == obj) return true;
 		
-		if (!(obj instanceof InvalidBeverage)) return false;
+		if (!(obj instanceof InvalidBeverageException)) return false;
 		else return true;
 		
 	}

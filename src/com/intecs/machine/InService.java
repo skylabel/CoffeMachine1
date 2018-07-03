@@ -1,6 +1,6 @@
 package com.intecs.machine;
 
-import com.intecs.machine.exception.InvalidSugarLevel;
+import com.intecs.machine.exception.InvalidSugarLevelException;
 
 public abstract class InService extends State {
 
@@ -16,9 +16,9 @@ public abstract class InService extends State {
 	}
 	
 	@Override
-	public void setSugarLevel(int level) throws InvalidSugarLevel {
+	public void setSugarLevel(int level) throws InvalidSugarLevelException {
 		if (!(sugarLevel.setLevel(level)))
-			throw new InvalidSugarLevel();
+			throw new InvalidSugarLevelException();
 	}
 
 }

@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -15,16 +16,17 @@ import com.intecs.beverage.BeverageType;
 import com.intecs.beverage.BeverageProperties;
 import com.intecs.beverage.Sugar;
 import com.intecs.machine.Money;
+import com.intecs.machine.ManualConfig;
 import com.intecs.machine.Key;
 import com.intecs.machine.Machine;
 import com.intecs.machine.SugarLevel;
-import com.intecs.machine.exception.InvalidBeverage;
-import com.intecs.machine.exception.InvalidSelection;
-import com.intecs.machine.exception.InvalidSugarLevel;
-import com.intecs.machine.exception.KeyNotPresent;
+import com.intecs.machine.exception.InvalidBeverageException;
+import com.intecs.machine.exception.InvalidSelectionException;
+import com.intecs.machine.exception.InvalidSugarLevelException;
+import com.intecs.machine.exception.KeyNotPresentException;
 import com.intecs.machine.exception.MachineException;
-import com.intecs.machine.exception.MachineIsOutOfService;
-import com.intecs.machine.exception.OutOfAvailableCredit;
+import com.intecs.machine.exception.MachineIsOutOfServiceException;
+import com.intecs.machine.exception.OutOfAvailableCreditException;
 
 class TestBuy {
 
@@ -34,7 +36,7 @@ class TestBuy {
 		
 		@Override
 		public Money getCredit() {
-			return new Money(CreditValue.ENOUGH_CREDIT);
+			return new Money(ICreditValue.ENOUGH_CREDIT);
 		}
 		
 	}
@@ -45,42 +47,42 @@ class TestBuy {
 	}
 
 	@Test
-	void testBuyWithOutKey() throws InvalidBeverage, OutOfAvailableCredit, MachineIsOutOfService {
+	void testBuyWithOutKey() throws InvalidBeverageException, OutOfAvailableCreditException, MachineIsOutOfServiceException {
 		try {
 			machine.buy(IBevarageNames.COFFEE);
 			fail("Exception expected.");
 			
-		} catch (KeyNotPresent e) {
+		} catch (KeyNotPresentException e) {
 			// Do nothing
 		} 
 	}
 
 	@Test
-	void testInvalidBeverageSelection() throws KeyNotPresent, OutOfAvailableCredit, MachineIsOutOfService {
+	void testInvalidBeverageSelection() throws KeyNotPresentException, OutOfAvailableCreditException, MachineIsOutOfServiceException {
 		Key key = Key.empty();
 		machine.insertKey(key);
 		try {
 			machine.buy(IBevarageNames.MOCHA);
 			fail("Exception expected.");
-		} catch (InvalidBeverage e) {
+		} catch (InvalidBeverageException e) {
 			// Do nothing
 		}
 	}
 
 	@Test
-	void testOutOfCredit() throws InvalidBeverage, KeyNotPresent, MachineIsOutOfService {
+	void testOutOfCredit() throws InvalidBeverageException, KeyNotPresentException, MachineIsOutOfServiceException {
 		Key key = Key.empty();
 		machine.insertKey(key);
 		try {
 			machine.buy(IBevarageNames.COFFEE);
 			fail("Exception expected.");
-		} catch (OutOfAvailableCredit e) {
+		} catch (OutOfAvailableCreditException e) {
 			// Do nothing 
 		}
 	}
 
 	@Test
-	void testBuyCaffe() throws InvalidBeverage, KeyNotPresent, OutOfAvailableCredit, MachineIsOutOfService {
+	void testBuyCaffe() throws InvalidBeverageException, KeyNotPresentException, OutOfAvailableCreditException, MachineIsOutOfServiceException {
 		Key key = new KeyStub();
 		assertTrue(machine.isValid(IBevarageNames.COFFEE));
 		
@@ -91,7 +93,7 @@ class TestBuy {
 	}
 	
 	@Test
-	void testBuyCoffeSelectingSugarLevel() throws InvalidSelection, KeyNotPresent, OutOfAvailableCredit, MachineIsOutOfService {
+	void testBuyCoffeSelectingSugarLevel() throws InvalidSelectionException, KeyNotPresentException, OutOfAvailableCreditException, MachineIsOutOfServiceException {
 		Key key = new KeyStub();
 		assertTrue(machine.isValid(IBevarageNames.COFFEE));
 		machine.insertKey(key);
@@ -103,12 +105,47 @@ class TestBuy {
 	}
 	
 	@Test
-	void testBuyMoneyNegative() throws InvalidSelection, KeyNotPresent, OutOfAvailableCredit, MachineIsOutOfService {
-		Key key = new Key(new Money(-3.0f));
-        
-		machine.insertKey(key);
-		machine.buy(IBevarageNames.COFFEE);
+	void testBuyMoneyNegative() throws InvalidSelectionException, KeyNotPresentException, OutOfAvailableCreditException, MachineIsOutOfServiceException {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Key key = new Key(new Money(-3.0f));
+	        
+			machine.insertKey(key);
+			machine.buy(IBevarageNames.COFFEE);
+	    });
+		
 	}
 	
+	@Test
+	void testBeverageTypeList() {
+		
+		ManualConfig config = new ManualConfig();
+		config.add("Caffè", 0.30f);
+		config.add("Te", 0.20f);
+		config.add("Cioccolato", 0.50f);
+		
+		Machine m = new Machine(config);
+		
+		assertEquals(3, m.getBeverageNameList().size());
+		assertTrue(m.getBeverageNameList().contains(BeverageType.of("Caffè")));
+		assertTrue(m.getBeverageNameList().contains(BeverageType.of("Te")));
+		assertTrue(m.getBeverageNameList().contains(BeverageType.of("Cioccolato")));
+		
+	}
+	
+	@Test
+	void testBeverageTypeList2() {
+		
+		ManualConfig config = new ManualConfig();
+		config.add(IBevarageNames.COFFEE, 0.30f);
+		config.add(IBevarageNames.CAPPUCCINO, 0.40f);
+		config.add(IBevarageNames.CHOCOLATE, 0.50f);
+		
+		Machine m = new Machine(config);
+		
+		assertEquals(3, m.getBeverageNameList().size());
+		assertTrue(m.getBeverageNameList().contains(IBevarageNames.COFFEE));
+		assertTrue(m.getBeverageNameList().contains(IBevarageNames.CAPPUCCINO));
+		assertTrue(m.getBeverageNameList().contains(IBevarageNames.CHOCOLATE));
+	}
 	
 }

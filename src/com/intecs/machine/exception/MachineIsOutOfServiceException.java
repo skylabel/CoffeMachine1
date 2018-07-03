@@ -1,16 +1,15 @@
 package com.intecs.machine.exception;
 
-public class MachineIsOutOfService extends MachineException {
+public class MachineIsOutOfServiceException extends MachineException {
 	
-	public MachineIsOutOfService() {
+	public MachineIsOutOfServiceException() {
 			super("Macchina fuori servizio.");
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-		
-		if (!(obj instanceof FullCredit)) return false;
+		if (!(obj instanceof FullCreditException)) return false;
 		else return true;
 	}
 

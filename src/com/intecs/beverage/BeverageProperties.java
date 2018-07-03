@@ -4,7 +4,7 @@ import com.intecs.machine.Money;
 
 public class BeverageProperties {
 	
-	private BeverageType beveragename;
+	private BeverageType beveragetype;
 	private Money cost;
 	
 	public BeverageProperties(BeverageType beveragename, Money cost) {
@@ -13,7 +13,7 @@ public class BeverageProperties {
 		if(cost==null)
 			throw new NullPointerException("No Money for Beverage Type");
 		
-		this.beveragename = beveragename;
+		this.beveragetype = beveragename;
 		this.cost=cost;
 	}
 	public BeverageProperties() {
@@ -25,7 +25,7 @@ public class BeverageProperties {
 			throw new NullPointerException("No beverage name");
 		
 		
-		this.beveragename = beveragename;
+		this.beveragetype = beveragename;
 		this.cost=Money.zero();
 	}
 	public BeverageProperties(Money cost) {
@@ -33,12 +33,12 @@ public class BeverageProperties {
 		if(cost==null)
 			throw new NullPointerException("No Money for Beverage Type");
 		
-		this.beveragename = new BeverageType();
+		this.beveragetype = new BeverageType();
 		this.cost=cost;
 	}
 
 	public BeverageType getName() {
-		return this.beveragename;
+		return this.beveragetype;
 	}
 	
 	public Money getCost() {
@@ -51,7 +51,7 @@ public class BeverageProperties {
 		if (!(obj instanceof BeverageProperties)) return false;
 		
 		BeverageProperties c = (BeverageProperties) obj;
-		if(beveragename.equals(c.beveragename)) result = true;
+		if(beveragetype.equals(c.beveragetype)) result = true;
 		return result;
 	}
 	
@@ -62,7 +62,7 @@ public class BeverageProperties {
 		if (!(obj instanceof BeverageProperties)) return false;
 		
 		BeverageProperties c = (BeverageProperties) obj;
-		if(beveragename.equals(c.beveragename) && cost.equals(c.cost)) result = true;
+		if(beveragetype.equals(c.beveragetype) && cost.equals(c.cost)) result = true;
 		return result;
 	}
 

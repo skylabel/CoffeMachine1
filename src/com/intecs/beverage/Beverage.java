@@ -5,8 +5,10 @@ public class Beverage {
 	private final BeverageProperties type;
 	private final Sugar sugar;
 
-	public Beverage(BeverageProperties _type, Sugar sugar) {
-		this.type = _type;
+	public Beverage(BeverageProperties type, Sugar sugar) {
+		if(type==null) throw new NullPointerException("Type is null.");
+		if(sugar==null) throw new NullPointerException("Sugar is null.");
+		this.type = type;
 		this.sugar = sugar;
 	}
 	

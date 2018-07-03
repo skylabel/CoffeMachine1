@@ -11,6 +11,8 @@ public class SugarLevel {
 	}
 	
 	public SugarLevel(int level) {
+		if ((Integer)level==null) 
+			throw new NullPointerException("level is null");
 		this.level = level;
 	}
 

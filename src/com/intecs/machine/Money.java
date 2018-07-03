@@ -19,6 +19,15 @@ public class Money implements Comparable<Money>{
 		return new Money();
 	}
 
+	public Money sum(Money c1) {
+		Float result=c1.value+this.value;
+		return new Money(result);
+	}
+
+	public Money sub(Money cost) {
+		Float result=this.value-cost.value;
+		return new Money(result);	
+	}
 
 	@Override
 	public String toString() {
@@ -35,11 +44,6 @@ public class Money implements Comparable<Money>{
 		return result;
 	}
 	
-	public Money sum(Money c1) {
-		Float result=c1.value+this.value;
-		return new Money(result);
-	}
-
 	@Override
 	public int compareTo(Money credit) {
 		int result=Float.compare(this.value, credit.value);
